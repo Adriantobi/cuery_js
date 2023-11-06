@@ -7,26 +7,36 @@ Introducing 'cuery' pronounced as query: The CLI magician that effortlessly writ
 - You must have node installed
 
 ### Install
-> npm i -g cuery_js
+```shell
+npm i -g cuery_js
+```
 
 - This globally installs the package.
 
 ### How to use
 - To use the cuery CLI tool, simply run the following command:
-> cry <command> [options]
+```shell
+cry <command> [options]
+```
 - Yes cry, I do every night
 - The command argument specifies the task that you want to perform. The options arguments are used to configure the command.
 
 #### Examples
 Here are some examples of how to use the cry CLI tool:
 
-> cry list -c 
+```shell
+cry list -c
+```
 - This returns all the files in the current directory
 
-> cry run test.dart
+```shell
+cry run test.dart
+```
 - Runs code 
 
-> cry write --fp=test.txt -t="Please append" -a
+```shell
+cry write --fp=test.txt -t="Please append" -a
+```
 - Append text to file
 
 #### Supported Languages
