@@ -35,17 +35,33 @@ cry run test.dart
 - Runs code 
 
 ```shell
+cry run next-create
+```
+- Create next app
+
+```shell
+cry run next-dev
+```
+- Run next app in localhost
+
+```shell
+cry run next-build
+```
+- Build next app
+
+```shell
 cry write --fp=test.txt -t="Please append" -a
 ```
 - Append text to file
 
 #### Supported Languages
-The following languages are supported with cry run
+The following languages are supported with ``cry run``
 - Dart
 - Java
 - JavaScript
 - Rust
 - Python
+- NextJs
 
 ### Conclusion
-The cry CLI tool is a simple and easy-to-use tool for performing common tasks such as listing items in a project, writing text to a file, and running code. It is a good choice for developers and beginners alike.The cry CLI tool is a simple and easy-to-use tool for performing common tasks such as listing items in a project, writing text to a file, and running code. It is a good choice for developers and beginners alike.
+The cuery CLI tool is a simple and easy-to-use tool for performing common tasks such as listing items in a project, writing text to a file, and running code. It is a good choice for developers and beginners alike.

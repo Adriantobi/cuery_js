@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 import fs from "fs";
+import path from "path";
 import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
 import { execSync } from "child_process";
@@ -21,7 +22,6 @@ const argv = yargs(hideBin(process.argv))
 				description: 'Display current directory',
 			},
 		})
-		.implies('current', 'directory')
 		.usage('Usage: cry list [-d, directory] | [-c, current]')
 	})
 	.command('write', 'Write text to a file', function (yargs) {
@@ -64,7 +64,7 @@ const argv = yargs(hideBin(process.argv))
 	.argv;
 
 const writeTextToFile = async (filePath, text, append) => {
-	if (!filePath) { return }
+	if (!filePath) { throw(new Error("Please pass appropriate options")) }
 	if (!append) {
 		await fs.promises.writeFile(filePath, text, 'utf-8');
 		console.log('Written to file')
@@ -74,57 +74,82 @@ const writeTextToFile = async (filePath, text, append) => {
 	}
 };
 
+async function printDirectoryContents(directoryPath, indentationLevel = 0) {
+  const directoryEntries = await fs.promises.readdir(directoryPath);
+
+  for (const directoryEntry of directoryEntries) {
+    const filePath = path.join(directoryPath, directoryEntry);
+    const isDirectory = await fs.promises.lstat(filePath).then((stats) => stats.isDirectory());
+
+    console.log(`${" ".repeat(indentationLevel)}- ${directoryEntry}`);
+
+    if (isDirectory) {
+      await printDirectoryContents(filePath, indentationLevel + 1);
+    }
+  }
+};
+
 const readDirectory = async (directory, current) => {
 	if (!directory && !current) { return }
 	else if (directory && !current){
-		const files = await fs.promises.readdir(directory);
-		files.forEach((file) => {
-			console.log(file);
-		});
+		printDirectoryContents(directory)	
 	} else if (current && !directory) {
-		const files = await fs.promises.readdir(process.cwd());
-		files.forEach((file) => {
-			console.log(file);
-		})
+		printDirectoryContents(process.cwd())
 	} else {
-		console.log('Silly, you can\'t have both')
+		throw(new Error('Error: pass either id or first option for read command'));
 	}
 };
 
 const runCode = async (fileName) => {
 	if (!fileName) { return }
-	console.log('Running code in file ' + fileName)
-	const extension = fileName.split(".").pop();
-
-	switch (extension) {
-		case "rs":
-			execSync(`cargo run ${fileName}`, {stdio: 'inherit'});
-			break;
-		case "java":
-			execSync(`java -cp . ${fileName}`, {stdio: 'inherit'});
-			break;
-		case "js":
-			execSync(`node ${fileName}`, {stdio: 'inherit'});
-			break;
-		case "py":
-			execSync(`python ${fileName}`, {stdio: 'inherit'});
-			break;
-		case "dart":
-			execSync(`dart run ${fileName}`, {stdio: 'inherit'});
-			break;
-		default:
-			console.log("Unsupported file type of ." + extension);
-			process.exit(1);
+	else if (fileName.substring(0,4) == 'next') {	
+		switch (fileName) {
+			case "next-create":
+				execSync(`npx create-next-app@latest .`, {stdio: 'inherit'});
+				break;
+			case "next-dev":
+				execSync(`npm run dev`, {stdio: 'inherit'});
+				break;
+			case "next-build":
+				execSync(`npm run build`, {stdio: 'inherit'});
+				break;
+			default:
+				console.log("Unsupported next command.");
+				process.exit(1);	
+		}
+	}	
+	
+	else if(fileName.includes(".")) {
+		const extension = fileName.split(".").pop();
+		
+		switch (extension) {
+			case "rs":
+				execSync(`cargo run ${fileName}`, {stdio: 'inherit'});
+				break;
+			case "java":
+				execSync(`java -cp . ${fileName}`, {stdio: 'inherit'});
+				break;
+			case "js":
+				execSync(`node ${fileName}`, {stdio: 'inherit'});
+				break;
+			case "py":
+				execSync(`python ${fileName}`, {stdio: 'inherit'});
+				break;
+			case "dart":
+				execSync(`dart run ${fileName}`, {stdio: 'inherit'});
+				break;
+			default:
+				console.log("Unsupported file type of ." + extension);
+				process.exit(1);
+		}
 	}
 };
-
 
 if (argv._[0] === "run") {
 	await runCode(argv.fileName);
 } else {
 	writeTextToFile(argv.filePath, argv.text, argv.append);
-	readDirectory(argv.directory, argv.current);
-  
+	readDirectory(argv.directory, argv.current);  
 }
 
-yargs.arg;
+yargs.argv;
