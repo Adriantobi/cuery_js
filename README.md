@@ -50,6 +50,11 @@ cry run next-build
 - Build next app
 
 ```shell
+cry run serve
+```
+- Serves HTML files to localhost
+
+```shell
 cry write --fp=test.txt -t="Please append" -a
 ```
 - Append text to file

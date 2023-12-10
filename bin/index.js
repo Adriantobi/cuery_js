@@ -49,10 +49,10 @@ const argv = yargs(hideBin(process.argv))
 	})
 	.command('run [fileName]', 'Run Code', function (yargs) {
 		yargs.positional('fileName',{
-			describe: 'Path of file to run',
+			describe: 'Path of file to run | command',
 			type: 'string',
 		})
-		.usage('Usage: cry run [fileName]')
+		.usage('Usage: cry run [fileName | command]')
 	})
 	.alias({
         	help: 'h',
@@ -64,7 +64,7 @@ const argv = yargs(hideBin(process.argv))
 	.argv;
 
 const writeTextToFile = async (filePath, text, append) => {
-	if (!filePath) { throw(new Error("Please pass appropriate options")) }
+	if (!filePath) { return }
 	if (!append) {
 		await fs.promises.writeFile(filePath, text, 'utf-8');
 		console.log('Written to file')
@@ -102,7 +102,7 @@ const readDirectory = async (directory, current) => {
 
 const runCode = async (fileName) => {
 	if (!fileName) { return }
-	else if (fileName.substring(0,4) == 'next') {	
+	else if (fileName.substring(0,3) == 'next') {	
 		switch (fileName) {
 			case "next-create":
 				execSync(`npx create-next-app@latest .`, {stdio: 'inherit'});
@@ -119,6 +119,18 @@ const runCode = async (fileName) => {
 		}
 	}	
 	
+	else if (fileName.substring(0,4)) {
+		switch (fileName) {
+			case "serve":
+				execSync(`npx serve`, {stdio: 'inherit'});
+				break;
+
+			default:
+				console.log("That is not how you serve HTML files");
+				break;
+		}
+	}
+
 	else if(fileName.includes(".")) {
 		const extension = fileName.split(".").pop();
 		
