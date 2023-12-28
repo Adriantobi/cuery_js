@@ -102,7 +102,7 @@ const readDirectory = async (directory, current) => {
 
 const runCode = async (fileName) => {
 	if (!fileName) { return }
-	else if (fileName.substring(0,3) == 'next') {	
+	else if (fileName.substring(0,4) === 'next') {	
 		switch (fileName) {
 			case "next-create":
 				execSync(`npx create-next-app@latest .`, {stdio: 'inherit'});
@@ -119,7 +119,7 @@ const runCode = async (fileName) => {
 		}
 	}	
 	
-	else if (fileName.substring(0,4)) {
+	else if (fileName.substring(0,4) === 'serve') {
 		switch (fileName) {
 			case "serve":
 				execSync(`npx serve`, {stdio: 'inherit'});
