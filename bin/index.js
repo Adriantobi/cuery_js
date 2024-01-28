@@ -69,7 +69,7 @@ const writeTextToFile = async (filePath, text, append) => {
 		await fs.promises.writeFile(filePath, text, 'utf-8');
 		console.log('Written to file')
 	} else {
-		await fs.promises.appendFile(filePath, `\n${text}`, 'utf-8');
+		await fs.promises.appendFile(filePath, '\n${text}', 'utf-8');
 		console.log('Appended to file')
 	}
 };
@@ -81,7 +81,7 @@ async function printDirectoryContents(directoryPath, indentationLevel = 0) {
     const filePath = path.join(directoryPath, directoryEntry);
     const isDirectory = await fs.promises.lstat(filePath).then((stats) => stats.isDirectory());
 
-    console.log(`${" ".repeat(indentationLevel)}- ${directoryEntry}`);
+    console.log('${" ".repeat(indentationLevel)}- ${directoryEntry}');
 
     if (isDirectory) {
       await printDirectoryContents(filePath, indentationLevel + 1);
@@ -105,13 +105,13 @@ const runCode = async (fileName) => {
 	else if (fileName.substring(0,4) === 'next') {	
 		switch (fileName) {
 			case "next-create":
-				execSync(`npx create-next-app@latest .`, {stdio: 'inherit'});
+				execSync('npx create-next-app@latest .', {stdio: 'inherit'});
 				break;
 			case "next-dev":
-				execSync(`npm run dev`, {stdio: 'inherit'});
+				execSync('npm run dev', {stdio: 'inherit'});
 				break;
 			case "next-build":
-				execSync(`npm run build`, {stdio: 'inherit'});
+				execSync('npm run build', {stdio: 'inherit'});
 				break;
 			default:
 				console.log("Unsupported next command.");
@@ -122,7 +122,7 @@ const runCode = async (fileName) => {
 	else if (fileName.substring(0,4) === 'serve') {
 		switch (fileName) {
 			case "serve":
-				execSync(`npx serve`, {stdio: 'inherit'});
+				execSync('npx serve', {stdio: 'inherit'});
 				break;
 
 			default:
@@ -136,22 +136,22 @@ const runCode = async (fileName) => {
 		
 		switch (extension) {
 			case "rs":
-				execSync(`cargo run ${fileName}`, {stdio: 'inherit'});
+				execSync('cargo run ${fileName}', {stdio: 'inherit'});
 				break;
 			case "java":
-				execSync(`java -cp . ${fileName}`, {stdio: 'inherit'});
+				execSync('java -cp . ${fileName}', {stdio: 'inherit'});
 				break;
 			case "js":
-				execSync(`node ${fileName}`, {stdio: 'inherit'});
+				execSync('node ${fileName}', {stdio: 'inherit'});
 				break;
 			case "py":
-				execSync(`python ${fileName}`, {stdio: 'inherit'});
+				execSync('python ${fileName}', {stdio: 'inherit'});
 				break;
 			case "dart":
-				execSync(`dart run ${fileName}`, {stdio: 'inherit'});
+				execSync('dart run ${fileName}', {stdio: 'inherit'});
 				break;
 			default:
-				console.log("Unsupported file type of ." + extension);
+				console.log(`Unsupported file type of .${extension}`);
 				process.exit(1);
 		}
 	}
