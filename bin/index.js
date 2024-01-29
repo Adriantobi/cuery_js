@@ -152,6 +152,7 @@ const runCode = async (fileName) => {
 				break;
 			default:
 				console.log(`Unsupported file type of ${extension}`);
+				console.log(`Unsupported file type of .${extension}`);
 				process.exit(1);
 		}
 	}
